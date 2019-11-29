@@ -129,3 +129,34 @@ For the travis build system we need to pass credentials in an encrypted form.
 - *aws_credentials.env* - test user credentials
 - *aws_credentials_travis.yml* - 
 - *deploy_key* - git key to allow pushes
+
+
+Dockerised
+==========
+
+When running this tool in docker use the following command to build the image :
+
+```sh
+make build-docker
+```
+
+next, the environment variable for the AWS user
+```sh
+AWS_ACCESS_KEY_ID=""
+AWS_DEFAULT_REGION=us-east-1
+AWS_SECRET_ACCESS_KEY=""
+```
+
+next, set the following execution variables
+
+`SSM_BACKUP_PATH` - This should point to the ssm that contains the name of the s3 bucket you wish to use for the encrypted folder/ file
+
+`SOURCE_ABSOLUTE_DIR` - This is the absolute path to the folder containing the `ssm` backup created using [THIS](https://github.com/PaddleHQ/backup-ssm)
+
+`DEST_PATH` - This is the key for the object on the s3 backup bucket
+
+
+Finally, run the docker backup command using something similar to:
+```
+SOURCE_ABSOLUTE_DIR="/Users/leonsilcott/Workspace/backup-ssm/ssm-backup-YYYY-MM-dd" SSM_BACKUP_PATH="/backup_cloud/base_defs"  DEST_PATH="ssm" make run-docker
+```
