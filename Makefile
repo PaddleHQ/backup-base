@@ -119,7 +119,7 @@ run-docker: check-secret-env-backup ## Run command in docker command
 	@# Check if source exists locally on host machine
 	@if [ ! -d "$(SOURCE_ABSOLUTE_DIR)" ]; then echo -e "\n\nSource '$(SOURCE_ABSOLUTE_DIR)' does not exist.\n"; exit 1 ; fi
 
-	docker run -it --rm -v ${PWD}:/backup-base -v "$(SOURCE_ABSOLUTE_DIR)":/backup_source -e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) -e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) -e AWS_SESSION_TOKEN=$(AWS_SESSION_TOKEN) -e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) backup-base:latest backup-cloud-upload $(SSM_BACKUP_PATH) /backup_source $(S3_DEST_PATH)
+	docker run -it --rm -v ${PWD}:/backup-base -v "$(SOURCE_ABSOLUTE_DIR)":/backup_source -e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) -e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) -e AWS_SESSION_TOKEN=$(AWS_SESSION_TOKEN) -e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) backup-base:latest backup-cloud-upload $(SSM_PARAM_BACKUP_KEY) /backup_source $(S3_DEST_PATH)
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -139,8 +139,8 @@ endif
 
 
 check-secret-env-backup: check-secret-env ## Checks to make sure AWS environment variables used by backup-cloud (BACKUP) are set
-ifndef SSM_BACKUP_PATH
-	$(error SSM_BACKUP_PATH is undefined)
+ifndef SSM_PARAM_BACKUP_KEY
+	$(error SSM_PARAM_BACKUP_KEY is undefined)
 endif
 
 ifndef SOURCE_ABSOLUTE_DIR
