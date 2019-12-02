@@ -16,15 +16,10 @@ RUN apk add --no-cache py3-gpgme gnupg
 
 RUN pip3 install --upgrade awscli==1.16.67 s3cmd==2.0.2 python-magic python-gnupg 
 
-
-# RUN apt update && apt install -y libgpgme11 python3-gpg
-
 RUN gpg || true
 
 ADD ./ /backup-base
 
 RUN cd  /backup-base/ && python3.7 /backup-base/setup.py install
-# RUN python -m pip install -r /backup-base/requirements.txt
-# RUN python -m pip install gpg==1.8
 
 WORKDIR /
