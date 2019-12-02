@@ -134,7 +134,7 @@ For the travis build system we need to pass credentials in an encrypted form.
 Dockerised
 ==========
 
-When running this tool in docker use the following command to build the image :
+When running this tool in Docker, use the following command to build the image :
 
 ```sh
 make build-docker
@@ -149,14 +149,14 @@ AWS_SECRET_ACCESS_KEY=""
 
 next, set the following execution variables
 
-`SSM_BACKUP_PATH` - This should point to the ssm that contains the name of the s3 bucket you wish to use for the encrypted folder/ file
+`SSM_PARAM_BACKUP_KEY` - This should point to the SSM key that contains the name of the s3 bucket you wish to use to host the encrypted folder/ file.
 
-`SOURCE_ABSOLUTE_DIR` - This is the absolute path to the folder containing the `ssm` backup created using [THIS](https://github.com/PaddleHQ/backup-ssm)
+`SOURCE_ABSOLUTE_DIR` - This is the absolute path to the folder containing the file/folder you wish to encrypt and backup. For example, this could be used in tandem with [THIS](https://github.com/PaddleHQ/backup-ssm)
 
-`DEST_PATH` - This is the key for the object on the s3 backup bucket
+`S3_DEST_PATH` - This is the destination directory (key) that will be used to store the encrypted object on the s3 backup bucket (pulled from `SSM_PARAM_BACKUP_KEY`)
 
 
 Finally, run the docker backup command using something similar to:
 ```
-SOURCE_ABSOLUTE_DIR="/Users/leonsilcott/Workspace/backup-ssm/ssm-backup-YYYY-MM-dd" SSM_BACKUP_PATH="/backup_cloud/base_defs"  DEST_PATH="ssm" make run-docker
+SOURCE_ABSOLUTE_DIR="/Users/leonsilcott/Workspace/backup-ssm/ssm-backup-YYYY-MM-ddTHHmmss" SSM_PARAM_BACKUP_KEY="/backup_cloud/base_defs" S3_DEST_PATH="ssm" make run-docker
 ```
